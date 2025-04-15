@@ -1,107 +1,123 @@
-# Job Portal Project
+# JobConnect
 
-This project is a job portal platform designed to connect job seekers with recruiters, facilitating efficient hiring and job application processes. The backend is built with **Django**, while the frontend is powered by **React**, **Vite**, and **TypeScript**.
+JobConnect is a full-stack job portal application built with a modern **React (Vite + TypeScript + Tailwind CSS)** frontend and a powerful **Django + MySQL** backend. It helps connect job seekers and recruiters seamlessly.
 
-## Getting Started
+## 🚀 Quick Start
 
-Follow the steps below to set up and run both the frontend and backend of the job portal project.
+### 1. Clone the Repository
 
-### Frontend Setup (React + Vite)
+```bash
+git clone https://github.com/your-username/jobconnect.git
+cd jobconnect
+```
 
-1. Navigate to the project directory (which contains both frontend and backend):
+## 📦 Frontend Setup
 
-   ```bash
-   cd <project-directory>
-   ```
+> The main project folder **is the frontend**.
 
-2. Install the required dependencies for the frontend:
+```bash
+# Install frontend dependencies
+npm install
+# Start the development server
+npm run dev
+```
 
-   ```bash
-   npm install
-   ```
+Visit the frontend at: [http://localhost:5173](http://localhost:5173)
 
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+## 🖥️ Backend Setup (Django)
 
-The frontend will be live and running at `http://localhost:3000`.
+### Prerequisites
 
-### Backend Setup (Django)
+- Python 3.8 or higher
+- MySQL
+- Virtual Environment
 
-1. Navigate to the `backend` folder (assuming the backend is inside a subdirectory):
+### Steps
 
-   ```bash
-   cd backend
-   ```
+```bash
+# Go to backend folder
+cd backend
+# Create virtual environment
+python -m venv venv
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+# Install dependencies
+pip install django djangorestframework django-cors-headers mysqlclient python-dotenv pillow
+# Make migrations and migrate
+python manage.py makemigrations
+python manage.py migrate
+# Create a superuser
+python manage.py createsuperuser
+# Run the server
+python manage.py runserver
+```
 
-2. Install Django and required dependencies:
+Visit the Django admin at: [http://localhost:8000/admin](http://localhost:8000/admin)
 
-   ```bash
-   pip install django
-   ```
+## 🔧 Local MySQL Setup (Recommended)
 
-3. Create a Django project and a Django app if not already done:
+If you haven't yet configured MySQL and Django, refer to [`setup.md`](./setup.md) for a step-by-step guide including:
 
-   ```bash
-   django-admin startproject jobportal .
-   python manage.py startapp jobs
-   ```
+- MySQL DB & user creation
+- Django database connection
+- CORS setup
+- API integration
 
-4. Make migrations and apply them to the database:
+## 🗂️ Project Structure
 
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+```
+jobconnect/
+├── backend/              # Django backend
+│   ├── jobs/
+│   ├── accounts/
+│   └── companies/
+├── public/               # Vite public assets
+├── src/                  # React frontend source code
+├── package.json
+├── setup.md              # Full local setup instructions
+└── README.md
+```
 
-5. Create a superuser to access the Django admin panel:
+## 🌐 URLs
 
-   ```bash
-   python manage.py createsuperuser
-   ```
+- **Frontend**: `http://localhost:5173`
+- **Backend**: `http://localhost:8000`
+- **Admin Panel**: `http://localhost:8000/admin`
+- **API Base URL**: `http://localhost:8000/api/`
 
-   Follow the prompts to set up the superuser's username, email, and password.
+## 🛠 Tech Stack
 
-6. Run the Django development server:
-   ```bash
-   python manage.py runserver
-   ```
+**Frontend:**
 
-The backend will be live and running at `http://localhost:8000`.
+- React (Vite + TypeScript)
+- Tailwind CSS
+- Radix UI
+- React Query
+- Axios
 
-### Additional Information
+**Backend:**
 
-- The frontend uses **React** for building the user interface and **Vite** for fast development.
-- The backend uses **Django** as the web framework with a PostgreSQL/MySQL database for storing job-related data.
-- You can manage job postings, applications, and user authentication via the Django admin panel, available at `http://localhost:8000/admin`.
+- Django
+- Django REST Framework
+- MySQL
+- Pillow
+- dotenv
+- django-cors-headers
 
-### Deployment
+## 🧠 Next Steps
 
-For deployment instructions, follow the setup specific to your hosting environment (e.g., deploying on AWS, Heroku, or similar services).
+- Build models for jobs, companies, and user profiles
+- Add authentication & permissions
+- Connect frontend to API
+- Implement features like job posting, search, applications
 
----
+## 📄 License
 
-### Technologies Used
+MIT License
 
-- **Frontend**:
+## 👥 Contributing
 
-  - React.js
-  - Vite
-  - TypeScript
-  - Tailwind CSS
-  - Radix UI
-  - Axios
-  - React Query
-
-- **Backend**:
-  - Django
-  - PostgreSQL/MySQL (for database)
-  - Python
-
----
-
-### Notes
-
-- Make sure to install both the frontend and backend dependencies before running the servers.
-- You can switch between the frontend and backend directories based on which part of the project you're working on.
+Pull requests and feature suggestions are welcome! Let's build this together 🚀
