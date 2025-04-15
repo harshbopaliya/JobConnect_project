@@ -1,73 +1,107 @@
-# Welcome to your Lovable project
+# Job Portal Project
 
-## Project info
+This project is a job portal platform designed to connect job seekers with recruiters, facilitating efficient hiring and job application processes. The backend is built with **Django**, while the frontend is powered by **React**, **Vite**, and **TypeScript**.
 
-**URL**: https://lovable.dev/projects/46f995c5-9aeb-4a12-8fd8-7e1c0c8e7803
+## Getting Started
 
-## How can I edit this code?
+Follow the steps below to set up and run both the frontend and backend of the job portal project.
 
-There are several ways of editing your application.
+### Frontend Setup (React + Vite)
 
-**Use Lovable**
+1. Navigate to the project directory (which contains both frontend and backend):
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/46f995c5-9aeb-4a12-8fd8-7e1c0c8e7803) and start prompting.
+   ```bash
+   cd <project-directory>
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. Install the required dependencies for the frontend:
 
-**Use your preferred IDE**
+   ```bash
+   npm install
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The frontend will be live and running at `http://localhost:3000`.
 
-Follow these steps:
+### Backend Setup (Django)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. Navigate to the `backend` folder (assuming the backend is inside a subdirectory):
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+   ```bash
+   cd backend
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+2. Install Django and required dependencies:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+   ```bash
+   pip install django
+   ```
 
-**Edit a file directly in GitHub**
+3. Create a Django project and a Django app if not already done:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+   ```bash
+   django-admin startproject jobportal .
+   python manage.py startapp jobs
+   ```
 
-**Use GitHub Codespaces**
+4. Make migrations and apply them to the database:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-## What technologies are used for this project?
+5. Create a superuser to access the Django admin panel:
 
-This project is built with:
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+   Follow the prompts to set up the superuser's username, email, and password.
 
-## How can I deploy this project?
+6. Run the Django development server:
+   ```bash
+   python manage.py runserver
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/46f995c5-9aeb-4a12-8fd8-7e1c0c8e7803) and click on Share -> Publish.
+The backend will be live and running at `http://localhost:8000`.
 
-## Can I connect a custom domain to my Lovable project?
+### Additional Information
 
-Yes it is!
+- The frontend uses **React** for building the user interface and **Vite** for fast development.
+- The backend uses **Django** as the web framework with a PostgreSQL/MySQL database for storing job-related data.
+- You can manage job postings, applications, and user authentication via the Django admin panel, available at `http://localhost:8000/admin`.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Deployment
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+For deployment instructions, follow the setup specific to your hosting environment (e.g., deploying on AWS, Heroku, or similar services).
+
+---
+
+### Technologies Used
+
+- **Frontend**:
+
+  - React.js
+  - Vite
+  - TypeScript
+  - Tailwind CSS
+  - Radix UI
+  - Axios
+  - React Query
+
+- **Backend**:
+  - Django
+  - PostgreSQL/MySQL (for database)
+  - Python
+
+---
+
+### Notes
+
+- Make sure to install both the frontend and backend dependencies before running the servers.
+- You can switch between the frontend and backend directories based on which part of the project you're working on.
