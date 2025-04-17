@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, JobSeekerProfile, EmployerProfile
@@ -8,6 +7,14 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('user_type', 'is_staff', 'is_active')
     search_fields = ('email', 'username', 'first_name', 'last_name')
     ordering = ('email',)
+    
+    # Add fieldsets for UserAdmin to work properly with custom User model
+    fieldsets = UserAdmin.fieldsets + (
+        ('Custom Fields', {'fields': ('user_type', 'profile_picture', 'phone_number')}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Custom Fields', {'fields': ('email', 'user_type', 'profile_picture', 'phone_number')}),
+    )
 
 class JobSeekerProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'experience_years', 'location', 'created_at')

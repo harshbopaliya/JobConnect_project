@@ -1,7 +1,7 @@
-
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import JobSeekerProfile, EmployerProfile
+from companies.models import Company
 
 User = get_user_model()
 
@@ -20,6 +20,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('id', 'name')
+
 class JobSeekerProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     
@@ -29,6 +34,7 @@ class JobSeekerProfileSerializer(serializers.ModelSerializer):
 
 class EmployerProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    company = CompanySerializer(read_only=True)
     
     class Meta:
         model = EmployerProfile
