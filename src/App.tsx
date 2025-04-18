@@ -38,7 +38,7 @@ const App = () => (
 
           {/* New Dashboard route */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/employer_dashboard" element={<EmployerDashboard />} />
+          <Route path="/EmployerDashboard" element={<EmployerDashboard />} />
 
           {/* Catch‑all for 404s */}
           <Route path="*" element={<NotFound />} />

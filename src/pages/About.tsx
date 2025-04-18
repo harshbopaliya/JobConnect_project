@@ -312,7 +312,7 @@ const About = () => {
                 Our Story
               </h2>
               <p className="text-gray-700 mb-4">
-                JobConnect was founded in 2020 with a simple but powerful idea:
+                JobConnect was founded in 2025 with a simple but powerful idea:
                 to transform the way people find jobs and companies hire talent.
                 Our founder, having experienced the frustrations of the
                 traditional job search process, saw an opportunity to create a

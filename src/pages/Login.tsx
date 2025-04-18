@@ -311,8 +311,8 @@ const Login = () => {
       });
 
       // ✅ Redirect based on user type
-      if (userType === "employer") {
-        navigate("/employer_dashboard");
+      if (userType == "employer") {
+        navigate("/EmployerDashboard");
       } else {
         navigate("/dashboard");
       }

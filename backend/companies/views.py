@@ -1,13 +1,14 @@
-
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import Industry, Company, CompanyReview
+from .models import Industry, Company, CompanyReview, Benefit, Culture
 from .serializers import (
     IndustrySerializer,
     CompanySerializer,
     CompanyDetailSerializer,
     CompanyReviewSerializer,
+    BenefitSerializer,
+    CultureSerializer,
 )
 
 class IndustryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -32,7 +33,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         serializer = CompanyReviewSerializer(reviews, many=True)
         return Response(serializer.data)
     
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def add_review(self, request, pk=None):
         company = self.get_object()
         serializer = CompanyReviewSerializer(
@@ -45,3 +46,21 @@ class CompanyViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CompanyReviewViewSet(viewsets.ModelViewSet):
+    queryset = CompanyReview.objects.all()
+    serializer_class = CompanyReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class BenefitViewSet(viewsets.ModelViewSet):
+    queryset = Benefit.objects.all()
+    serializer_class = BenefitSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class CultureViewSet(viewsets.ModelViewSet):
+    queryset = Culture.objects.all()
+    serializer_class = CultureSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
