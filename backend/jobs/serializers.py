@@ -3,6 +3,8 @@ from rest_framework import serializers
 from .models import JobCategory, Skill, Job, JobApplication, SavedJob
 from companies.serializers import CompanySerializer
 
+
+
 class JobCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = JobCategory

@@ -14,10 +14,12 @@ from .serializers import (
 )
 from .permissions import IsEmployerOrReadOnly, IsJobApplicant, IsEmployerForJob
 
+
 class JobCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = JobCategory.objects.all()
     serializer_class = JobCategorySerializer
     permission_classes = [permissions.AllowAny]
+
 
 class SkillViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Skill.objects.all()
@@ -26,67 +28,69 @@ class SkillViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
 
+
 class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.filter(is_active=True).order_by('-created_at')
     serializer_class = JobSerializer
     permission_classes = [IsEmployerOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'description', 'company__name', 'skills__name']
-    ordering_fields = ['created_at', 'application_deadline', 'salary_min', 'salary_max']
-    
+    ordering_fields = ['created_at',
+        'application_deadline', 'salary_min', 'salary_max']
+
     def get_queryset(self):
         queryset = Job.objects.filter(is_active=True).order_by('-created_at')
-        
+
         # Filter by category
         category = self.request.query_params.get('category')
         if category:
             queryset = queryset.filter(category__id=category)
-        
+
         # Filter by location
         location = self.request.query_params.get('location')
         if location:
             queryset = queryset.filter(location__icontains=location)
-        
+
         # Filter by job type
         job_type = self.request.query_params.get('job_type')
         if job_type:
             queryset = queryset.filter(job_type=job_type)
-        
+
         # Filter by experience level
         experience = self.request.query_params.get('experience')
         if experience:
             queryset = queryset.filter(experience_level=experience)
-        
+
         # Filter by remote jobs
         remote = self.request.query_params.get('remote')
         if remote and remote.lower() == 'true':
             queryset = queryset.filter(is_remote=True)
-        
+
         # Filter by salary range
         min_salary = self.request.query_params.get('min_salary')
         if min_salary:
             queryset = queryset.filter(salary_min__gte=min_salary)
-        
+
         max_salary = self.request.query_params.get('max_salary')
         if max_salary:
             queryset = queryset.filter(salary_max__lte=max_salary)
-        
+
         # Filter by skills
         skills = self.request.query_params.get('skills')
         if skills:
             skill_ids = [int(s) for s in skills.split(',')]
             queryset = queryset.filter(skills__id__in=skill_ids).distinct()
-        
+
         # Filter by company
         company = self.request.query_params.get('company')
         if company:
             queryset = queryset.filter(company__id=company)
-        
+
         # Featured jobs
         featured = self.request.query_params.get('featured')
         if featured and featured.lower() == 'true':
             queryset = queryset.filter(is_featured=True)
-        
+
         # Search query
         search = self.request.query_params.get('search')
         if search:
@@ -96,67 +100,67 @@ class JobViewSet(viewsets.ModelViewSet):
                 Q(company__name__icontains=search) |
                 Q(skills__name__icontains=search)
             ).distinct()
-        
+
         return queryset
-    
+
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return JobDetailSerializer
         return JobSerializer
-    
+
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context.update({'request': self.request})
         return context
-    
+
     def perform_create(self, serializer):
         serializer.save(company=self.request.user.employer_profile.company)
-    
+
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def apply(self, request, pk=None):
         job = self.get_object()
-        
+
         # Check if user already applied for this job
         if JobApplication.objects.filter(job=job, applicant=request.user).exists():
             return Response(
                 {"error": "You have already applied for this job"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         # Check if user is a job seeker
         if request.user.user_type != 'jobseeker':
             return Response(
                 {"error": "Only job seekers can apply for jobs"},
                 status=status.HTTP_403_FORBIDDEN
             )
-        
+
         serializer = JobApplicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(job=job, applicant=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def save_job(self, request, pk=None):
         job = self.get_object()
         user = request.user
-        
+
         # Check if already saved
         if SavedJob.objects.filter(job=job, user=user).exists():
             return Response(
                 {"error": "Job already saved"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         saved_job = SavedJob.objects.create(job=job, user=user)
         serializer = SavedJobSerializer(saved_job)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def unsave_job(self, request, pk=None):
         job = self.get_object()
         user = request.user
-        
+
         try:
             saved_job = SavedJob.objects.get(job=job, user=user)
             saved_job.delete()
